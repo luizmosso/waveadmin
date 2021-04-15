@@ -29,20 +29,21 @@ export const UserProvider = ({ children }) => {
 
   const refreshUser = async () => {
     try {
-      const { _id } = user;
+      const { _id, token, refreshToken } = user;
       const institution = JSON.parse(
         localStorage.getItem(process.env.REACT_APP_INSTITUTION_LOCALSTORAGE)
       );
 
       const newUser = await fetchUser(_id, institution?._id);
-      console.log();
       if (newUser.error) throw Error(newUser.error);
-      setUser(newUser);
+      const newUserWithTokens = { ...newUser, token, refreshToken };
+
+      setUser(newUserWithTokens);
       localStorage.setItem(
         process.env.REACT_APP_USER_LOCALSTORAGE,
-        JSON.stringify(newUser)
+        JSON.stringify(newUserWithTokens)
       );
-      return newUser;
+      return newUserWithTokens;
     } catch (error) {
       return { error: true, message: error.message };
     }

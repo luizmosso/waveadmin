@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import { Switch, Route, withRouter, Redirect } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
-import { useUser } from './data/contexts/User';
+import { useUser } from './data/contexts';
 import { mediaQueries } from './components/Theme';
 import { MainView, LoginView } from './views';
 
@@ -14,7 +14,7 @@ const AppRoutes = () => {
 
   const dimensionProps = { ...{ isBigScreen, isSmallScreen, isMobile } };
 
-  const { isLoggedIn, setIsLoggedIn, setUser } = useUser() || {};
+  const { isLoggedIn, setIsLoggedIn, setUser } = useUser();
 
   useEffect(() => {
     const storedUser = JSON.parse(

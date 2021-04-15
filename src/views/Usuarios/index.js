@@ -41,7 +41,6 @@ function Usuarios() {
   const getAndSetUsers = async () => {
     try {
       const fetchedUsers = await fetchUsers(institution._id);
-      console.log(fetchedUsers);
       if (fetchedUsers.error) throw Error(fetchedUsers.error);
       setUsers(fetchedUsers);
     } catch (error) {

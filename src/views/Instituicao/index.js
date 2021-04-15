@@ -41,24 +41,25 @@ function Instituicao() {
   };
 
   const saveInstitution = async () => {
-    try {
-      const updatedInstitution = await updateInstitution(newInstitution);
+    const updatedInstitution = await updateInstitution(newInstitution);
+    if (updatedInstitution.error) {
       setBanner({
-        content: 'Os dados da instituição foram alterados com sucesso!',
-        success: true,
-      });
-      await refreshUser();
-      await refreshInstitution(updatedInstitution);
-      setNewInstitution(updatedInstitution);
-      showSalvar(false);
-      showAlterar(true);
-      setDisabled(true);
-    } catch (error) {
-      setBanner({
-        content: error.message || 'Erro ao salvar a instituição',
+        content: updatedInstitution.error || 'Erro ao salvar a instituição',
         error: true,
       });
+      return;
     }
+
+    setBanner({
+      content: 'Os dados da instituição foram alterados com sucesso!',
+      success: true,
+    });
+    await refreshUser();
+    await refreshInstitution(updatedInstitution);
+    setNewInstitution(updatedInstitution);
+    showSalvar(false);
+    showAlterar(true);
+    setDisabled(true);
   };
 
   useEffect(() => {

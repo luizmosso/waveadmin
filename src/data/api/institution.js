@@ -13,7 +13,12 @@ export async function fetchInstitution(id) {
 }
 
 export async function updateInstitution({ _id, ...institution }) {
-  const options = getDefaultRequestData('PUT', JSON.stringify(institution));
+  await refreshToken();
+  const options = getDefaultRequestData(
+    'PUT',
+    JSON.stringify(institution),
+    true
+  );
 
   const url = new URL(`${apiPath}/${_id}`);
   const response = await fetch(url, options);
