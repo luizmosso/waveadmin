@@ -20,17 +20,20 @@ const MEMBERS = 'allMembers';
 function ReportFamilias() {
   const [option, setOption] = useState(null);
   const [banner, setBanner] = useState(false);
+  const [reportCount, setReportCount] = useState(0);
   const { setTopBarTitle } = useContext(TopBarContext);
   const isMobile = useMediaQuery(mediaQueries.mobile);
 
   const options = {
     allFamilies: {
       title: 'Todas as Famílias',
-      component: <All isMobile={isMobile} id={ALL} />,
+      component: <All isMobile={isMobile} id={ALL} onLoad={setReportCount} />,
     },
     allMembers: {
       title: 'Membros das Famílias',
-      component: <Members isMobile={isMobile} id={MEMBERS} />,
+      component: (
+        <Members isMobile={isMobile} id={MEMBERS} onLoad={setReportCount} />
+      ),
     },
   };
 
@@ -64,7 +67,9 @@ function ReportFamilias() {
         )}
         {option && (
           <Flex justifyContent="flex-end">
+            <p>{`${reportCount} registro${reportCount !== 1 ? 's' : ''}`}</p>
             <ExcelButton
+              ml={2}
               backgroundColor={colors.success}
               id="test-table-xls-button"
               className="download-table-xls-button"

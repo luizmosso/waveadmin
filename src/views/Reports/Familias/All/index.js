@@ -4,7 +4,7 @@ import { useInstitution } from '../../../../data/contexts/Institution';
 import { fetchFamilies } from '../../../../data/api/family';
 import { Table, TableRow, TableColumn } from '../../../../components';
 
-export default function All({ isMobile, id }) {
+export default function All({ isMobile, id, onLoad }) {
   const [report, setReport] = useState([]);
   const { institution } = useInstitution();
 
@@ -31,6 +31,10 @@ export default function All({ isMobile, id }) {
     };
     if (institution) setReportData();
   }, [institution]);
+
+  useEffect(() => {
+    onLoad(report?.length);
+  }, [report]);
 
   return (
     <>
@@ -79,9 +83,11 @@ export default function All({ isMobile, id }) {
 All.propTypes = {
   isMobile: PropTypes.bool,
   id: PropTypes.string,
+  onLoad: PropTypes.func,
 };
 
 All.defaultProps = {
   id: null,
   isMobile: false,
+  onLoad: () => {},
 };

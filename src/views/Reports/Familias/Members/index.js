@@ -6,7 +6,7 @@ import { Table, TableRow, TableColumn } from '../../../../components';
 import { calculateAge } from '../../../../utils/general';
 import { faixaEtaria } from '../../../../constants/families';
 
-export default function Members({ isMobile, id }) {
+export default function Members({ isMobile, id, onLoad }) {
   const [report, setReport] = useState([]);
   const { institution } = useInstitution();
 
@@ -40,6 +40,10 @@ export default function Members({ isMobile, id }) {
     if (institution) setReportData();
   }, [institution]);
 
+  useEffect(() => {
+    onLoad(report?.length);
+  }, [report]);
+
   return (
     <>
       <Table
@@ -58,7 +62,7 @@ export default function Members({ isMobile, id }) {
       >
         {report?.map(
           ({ id, nome, endereco, bairro, telefone, idade, faixa, ativo }) => (
-            <TableRow key={id}>
+            <TableRow key={nome}>
               <TableColumn>{id}</TableColumn>
               <TableColumn>{nome}</TableColumn>
               <TableColumn>{endereco}</TableColumn>
@@ -78,9 +82,11 @@ export default function Members({ isMobile, id }) {
 Members.propTypes = {
   isMobile: PropTypes.bool,
   id: PropTypes.string,
+  onLoad: PropTypes.func,
 };
 
 Members.defaultProps = {
   id: null,
   isMobile: false,
+  onLoad: () => {},
 };

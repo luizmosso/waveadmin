@@ -7,13 +7,15 @@ export const Table = ({ header, children, isMobile, ...props }) => {
     <Container>
       <StyledTable {...props}>
         {!isMobile && (
-          <TableRow header>
-            {header?.map((col, key) => (
-              <TableColumn key={key}>{col}</TableColumn>
-            ))}
-          </TableRow>
+          <thead>
+            <TableRow header>
+              {header?.map((col, key) => (
+                <TableColumn key={key}>{col}</TableColumn>
+              ))}
+            </TableRow>
+          </thead>
         )}
-        {children}
+        <tbody>{children}</tbody>
       </StyledTable>
     </Container>
   );
