@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
+import { baseStyle as withBaseStyle } from '../Theme';
 
-export const StyledFlex = styled.div`
+export const StyledFlexBase = styled.div`
   display: flex;
   ${({ width, alignItems, justifyContent, flexWrap, margin }) => css`
     width: ${width || '100%'};
@@ -10,3 +11,5 @@ export const StyledFlex = styled.div`
     margin: ${margin || 'unset'};
   `}
 `;
+
+export const StyledFlex = withBaseStyle(StyledFlexBase);

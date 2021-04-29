@@ -2,14 +2,13 @@ import styled, { css } from 'styled-components';
 import { colors } from '../Theme';
 const { light, bright } = colors;
 
-export const Container = styled.div`
+export const StyledGrid = styled.div`
   width: 100%;
   overflow-x: auto;
   max-width: 1000px;
 `;
-export const StyledTable = styled.table``;
 
-export const StyledRow = styled.tr`
+export const StyledRow = styled.div`
   display: flex;
   width: 100%;
   font-size: 0.9rem;
@@ -50,7 +49,7 @@ export const StyledRow = styled.tr`
     `}
 `;
 
-export const StyledColumn = styled.td`
+export const StyledColumn = styled.div`
   flex: 1;
   min-width: 200px;
   display: flex;

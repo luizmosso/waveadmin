@@ -39,4 +39,5 @@ export const Fields = withBaseStyle(FieldsBase);
 export const SubTitle = styled.p`
   font-family: Open Sans;
   color: ${colors.light};
+  margin-top: 1.6rem;
 `;

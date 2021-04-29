@@ -4,9 +4,9 @@ import { Container, IconContainer } from './styles';
 import { colors, useTopBar, EditIcon, DeleteIcon } from '../../components';
 import {
   Card,
-  Table,
-  Row,
-  Column,
+  Grid,
+  GridRow,
+  GridColumn,
   mediaQueries,
   Badge,
   Button,
@@ -102,23 +102,23 @@ function Usuarios() {
 
   const saveUser = async (newUser, error, apiMethod, successMessage) => {
     setLoading(true);
-    if (error) {
-      setBanner({ content: error, error: true });
-      return;
-    }
     try {
-      const { error } = await apiMethod(newUser);
       if (error) {
-        let message = error;
+        setBanner({ content: error, error: true });
+        return;
+      }
+      const { error: apiError } = await apiMethod(newUser);
+      if (apiError) {
+        let message = apiError;
         if (message.includes('Usuário já cadastrado'))
           message = `${message}, você pode associá-lo a sua instituição clicando no botão azul acima`;
         throw Error(message);
       }
       getAndSetUsers();
       setBanner({ content: successMessage, success: true });
-    } catch (error) {
+    } catch (err) {
       setBanner({
-        content: error.message || 'Erro ao salvar o usuário',
+        content: err.message || 'Erro ao salvar o usuário',
         error: true,
       });
     } finally {
@@ -181,17 +181,17 @@ function Usuarios() {
             {banner.content}
           </Banner>
         )}
-        <Table header={['Nome', 'Email', 'Status', '']} isMobile={isMobile}>
+        <Grid header={['Nome', 'Email', 'Status', '']} isMobile={isMobile}>
           {users?.map(({ _id, nome, email, status }) => (
-            <Row key={_id}>
-              <Column>{nome}</Column>
-              <Column>{email}</Column>
-              <Column>
+            <GridRow key={_id}>
+              <GridColumn>{nome}</GridColumn>
+              <GridColumn>{email}</GridColumn>
+              <GridColumn>
                 <Badge variant={status === 'active' ? 'success' : 'error'}>
                   {status}
                 </Badge>
-              </Column>
-              <Column>
+              </GridColumn>
+              <GridColumn>
                 <IconContainer
                   mr={8}
                   tooltip="Editar"
@@ -214,10 +214,10 @@ function Usuarios() {
                 >
                   <DeleteIcon />
                 </IconContainer>
-              </Column>
-            </Row>
+              </GridColumn>
+            </GridRow>
           ))}
-        </Table>
+        </Grid>
         {userModal?.mode === 'create' && (
           <NewUser
             onClose={() => setUserModal(null)}

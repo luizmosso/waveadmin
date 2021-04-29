@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Input } from '../../components';
+import { Modal, Input, Banner } from '../../components';
+import { isEmail } from '../../utils/validators';
 
 function NewUser({
   instituicao,
@@ -13,15 +14,17 @@ function NewUser({
   const [nome, setNome] = useState();
   const [email, setEmail] = useState();
   const [pwd, setPwd] = useState();
-
-  const invalidFields = (newUser) =>
-    Object.keys(newUser).find((prop) => !prop || prop === '');
+  const [emailError, setEmailError] = useState();
+  const [nomeError, setNomeError] = useState();
+  const [pwdError, setPwdError] = useState();
+  const [banner, setBanner] = useState(false);
 
   const userExists = (newUser) => usersEmails.includes(newUser.email);
 
   const invalidUser = (newUser) => {
     let error = null;
-    if (invalidFields(newUser)) error = 'Todos os campos devem ser preenchidos';
+    if (nomeError || pwdError) error = 'Todos os campos devem ser preenchidos';
+    if (emailError) error = emailError;
     if (userExists(newUser)) error = 'Este email já foi utilizado, tente outro';
     return error;
   };
@@ -29,8 +32,30 @@ function NewUser({
   const handleCreateUser = () => {
     const newUser = { nome, email, pwd, instituicao };
     const error = invalidUser(newUser);
+    if (error) {
+      setBanner({ content: error, error: true });
+      return;
+    }
     onConfirm(newUser, error);
   };
+
+  useEffect(() => {
+    setEmailError(
+      email === ''
+        ? 'campo obrigatório'
+        : isEmail(email)
+        ? ''
+        : 'Email is not valid!'
+    );
+  }, [email]);
+
+  useEffect(() => {
+    setNomeError(nome === '' ? 'campo obrigatório' : '');
+  }, [nome]);
+
+  useEffect(() => {
+    setPwdError(pwd === '' ? 'campo obrigatório' : '');
+  }, [pwd]);
 
   return (
     <Modal
@@ -45,12 +70,22 @@ function NewUser({
       show
       large
     >
+      {banner && (
+        <Banner
+          success={banner.success}
+          error={banner.error}
+          onDismiss={() => setBanner(null)}
+        >
+          {banner.content}
+        </Banner>
+      )}
       <Input
         value={nome}
         onChange={setNome}
         placeholder="José Antônio da Silva"
         label="Nome"
         mb="0.8rem"
+        error={nomeError}
       />
       <Input
         value={email}
@@ -59,6 +94,8 @@ function NewUser({
         label="E-mail"
         type="email"
         mb="0.8rem"
+        error={emailError}
+        autoComplete="off"
       />
       <Input
         value={pwd}
@@ -66,6 +103,8 @@ function NewUser({
         onChange={setPwd}
         placeholder="**********"
         label="Senha Inicial"
+        error={pwdError}
+        autoComplete="off"
       />
     </Modal>
   );

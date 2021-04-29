@@ -1,27 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyledTable, StyledRow, StyledColumn } from './styles';
+import { Container, StyledTable, StyledRow, StyledColumn } from './styles';
 
 export const Table = ({ header, children, isMobile, ...props }) => {
   return (
-    <StyledTable {...props}>
-      {!isMobile && (
-        <Row header>
-          {header?.map((col, key) => (
-            <Column key={key}>{col}</Column>
-          ))}
-        </Row>
-      )}
-      {children}
-    </StyledTable>
+    <Container>
+      <StyledTable {...props}>
+        {!isMobile && (
+          <TableRow header>
+            {header?.map((col, key) => (
+              <TableColumn key={key}>{col}</TableColumn>
+            ))}
+          </TableRow>
+        )}
+        {children}
+      </StyledTable>
+    </Container>
   );
 };
 
-export const Row = (props) => {
+export const TableRow = (props) => {
   return <StyledRow {...props} />;
 };
 
-export const Column = (props) => {
+export const TableColumn = (props) => {
   return <StyledColumn {...props} />;
 };
 

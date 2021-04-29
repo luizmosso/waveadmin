@@ -12,6 +12,8 @@ function Input({
   password,
   disabled,
   error,
+  changeVisibility,
+  autoComplete,
   ...props
 }) {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -51,9 +53,10 @@ function Input({
         placeholder={placeholder}
         type={getInputType()}
         disabled={disabled}
+        autoComplete={autoComplete}
       />
       {error && <Error>{error}</Error>}
-      {password && getPasswordIcon()}
+      {password && changeVisibility && getPasswordIcon()}
     </Container>
   );
 }
@@ -67,6 +70,8 @@ Input.propTypes = {
   password: PropTypes.bool,
   disabled: PropTypes.bool,
   error: PropTypes.string,
+  changeVisibility: PropTypes.bool,
+  autoComplete: PropTypes.string,
 };
 
 Input.defaultProps = {
@@ -78,6 +83,8 @@ Input.defaultProps = {
   password: false,
   disabled: false,
   error: null,
+  changeVisibility: true,
+  autoComplete: null,
 };
 
 export default Input;

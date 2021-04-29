@@ -14,7 +14,7 @@ export const Container = styled.div`
   position: relative;
 
   &::after {
-    content: 'ADMIN';
+    content: 'DASHBOARD';
     background: red;
     color: white;
     position: absolute;
@@ -24,7 +24,7 @@ export const Container = styled.div`
     padding: 1px 3px;
     font-weight: bold;
     bottom: -16px;
-    ${({ onlyIcon }) => !onlyIcon && 'right: 75px;'};
+    ${({ onlyIcon }) => !onlyIcon && 'margin-left: 60px;'};
     border-radius: 3px;
   }
 `;
